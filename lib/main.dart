@@ -45,7 +45,8 @@ class _MyAppState extends State<MyApp> {
     'openid',
     "offline_access",
     "profile",
-    'https://pelotondadschallenge.onmicrosoft.com/80db4ad3-4375-408a-9aaf-506c34eebe69/User'
+    'https://pelotondadschallenge.onmicrosoft.com/80db4ad3-4375-408a-9aaf-506c34eebe69/User',
+    "https://pelotondadschallenge.onmicrosoft.com/80db4ad3-4375-408a-9aaf-506c34eebe69/Admin"
   ];
 
   final AuthorizationServiceConfiguration _serviceConfiguration =
@@ -184,7 +185,10 @@ class _MyAppState extends State<MyApp> {
       _setBusyState();
       final TokenResponse? result = await _appAuth.token(TokenRequest(
           _clientId, _redirectUrl,
-          refreshToken: _refreshToken, issuer: _issuer, scopes: _scopes));
+          refreshToken: _refreshToken,
+          issuer: _issuer,
+          scopes: _scopes,
+          discoveryUrl: _discoveryUrl));
       _processTokenResponse(result);
       await _testApi(result);
     } catch (_) {

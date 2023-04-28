@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.flutter_aad_b2c">
    <application
         android:label="flutter_aad_b2c"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -30,5 +30,19 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+       <activity
+           android:name="net.openid.appauth.RedirectUriReceiverActivity"
+           android:exported="true"
+           tools:node="replace">
+           <intent-filter>
+               <action android:name="android.intent.action.VIEW"/>
+               <category android:name="android.intent.category.DEFAULT"/>
+               <category android:name="android.intent.category.BROWSABLE"/>
+               <data android:scheme="msauth"
+                   android:host="com.example.flutter_aad_b2c" />
+           </intent-filter>
+       </activity>
+
     </application>
 </manifest>

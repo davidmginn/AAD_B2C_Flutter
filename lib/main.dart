@@ -35,28 +35,27 @@ class _MyAppState extends State<MyApp> {
   String? _userInfo;
 
   // For a list of client IDs, go to https://demo.duendesoftware.com
-  final String _clientId = '7c3329d7-c513-4386-8859-999b1ef93b23';
-  final String _redirectUrl = 'msauth.com.example.flutterAadB2c://auth/';
-  final String _issuer = 'https://pelotondadschallenge.b2clogin.com';
+  final String _clientId = '262a9065-0e3e-49fe-a27c-41bf71502eae';
+  final String _redirectUrl = 'msauth://com.example.flutter_aad_b2c/NfgDlIG7XWJzUZRUL%2BbZySrMX1Q%3D';
+  final String _issuer = 'https://emunationB2C.b2clogin.com';
   final String _discoveryUrl =
-      'https://pelotondadschallenge.b2clogin.com/pelotondadschallenge.onmicrosoft.com/B2C_1_peloton_dads_challenge_susi/v2.0/.well-known/openid-configuration';
+      'https://emunationB2C.b2clogin.com/emunationB2C.onmicrosoft.com/B2C_1_SignInSignUp_2/v2.0/.well-known/openid-configuration';
   final String _postLogoutRedirectUrl = 'msauth.com.example.flutterAadB2c:/';
   final List<String> _scopes = <String>[
     'openid',
     "offline_access",
     "profile",
-    'https://pelotondadschallenge.onmicrosoft.com/80db4ad3-4375-408a-9aaf-506c34eebe69/User',
-    "https://pelotondadschallenge.onmicrosoft.com/80db4ad3-4375-408a-9aaf-506c34eebe69/Admin"
+    'https://emunationB2C.onmicrosoft.com/f22344b6-1f8a-40b9-ab75-0e62f878ef41/Read'
   ];
 
   final AuthorizationServiceConfiguration _serviceConfiguration =
       const AuthorizationServiceConfiguration(
     authorizationEndpoint:
-        'https://pelotondadschallenge.b2clogin.com/pelotondadschallenge.onmicrosoft.com/B2C_1_peloton_dads_challenge_susi/oauth2/v2.0/authorize',
+        'https://emunationB2C.b2clogin.com/emunationB2C.onmicrosoft.com/B2C_1_SignInSignUp_2/oauth2/v2.0/authorize',
     tokenEndpoint:
-        'https://pelotondadschallenge.b2clogin.com/pelotondadschallenge.onmicrosoft.com/B2C_1_peloton_dads_challenge_susi/oauth2/v2.0/token',
+        'https://emunationB2C.b2clogin.com/emunationB2C.onmicrosoft.com/B2C_1_SignInSignUp_2/oauth2/v2.0/token',
     endSessionEndpoint:
-        'https://pelotondadschallenge.b2clogin.com/pelotondadschallenge.onmicrosoft.com/B2C_1_peloton_dads_challenge_susi/oauth2/v2.0/logout',
+        'https://emunationB2C.b2clogin.com/emunationB2C.onmicrosoft.com/B2C_1_SignInSignUp_2/oauth2/v2.0/logout',
   );
 
   @override

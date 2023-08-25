@@ -40,7 +40,9 @@ class _MyAppState extends State<MyApp> {
   final String _issuer = 'https://emunationB2C.b2clogin.com';
   final String _discoveryUrl =
       'https://emunationB2C.b2clogin.com/emunationB2C.onmicrosoft.com/B2C_1_SignInSignUp_2/v2.0/.well-known/openid-configuration';
-  final String _postLogoutRedirectUrl = 'msauth.com.example.flutterAadB2c:/';
+  final String _passwordResetDiscoveryUrl =
+      'https://emunationB2C.b2clogin.com/emunationB2C.onmicrosoft.com/B2C_1A_DEMO2_HELPER_SIGNUP_SIGNIN_FORCEPASSWORDRESET/v2.0/.well-known/openid-configuration';
+  final String _postLogoutRedirectUrl = 'msauth://com.example.flutter_aad_b2c';
   final List<String> _scopes = <String>[
     'openid',
     "offline_access",
@@ -82,6 +84,11 @@ class _MyAppState extends State<MyApp> {
                   child: const Text(
                       'Sign in with no code exchange and generated nonce'),
                   onPressed: () => _signInWithNoCodeExchangeAndGeneratedNonce(),
+                ),
+                ElevatedButton(
+                  child: const Text(
+                      'Sign in with password reset'),
+                  onPressed: () => _passwordResetWithNoCodeExchange(),
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton(
@@ -251,6 +258,45 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<void> _passwordResetWithNoCodeExchange() async {
+    try {
+      _setBusyState();
+      /*
+        The discovery endpoint (_discoveryUrl) is used to find the
+        configuration. The code challenge generation can be checked here
+        > https://github.com/MaikuB/flutter_appauth/search?q=challenge.
+        The code challenge is generated from the code verifier and only the
+        code verifier is included in the result. This because to get the token
+        in the method _exchangeCode (see above) we need only the code verifier
+        and the authorization code.
+        Code challenge is not used according to the spec
+        https://www.rfc-editor.org/rfc/rfc7636 page 9 section 4.5.
+      */
+      final AuthorizationResponse? result = await _appAuth.authorize(
+        AuthorizationRequest(_clientId, _redirectUrl,
+            discoveryUrl: _passwordResetDiscoveryUrl, scopes: _scopes),
+      );
+
+      /*
+        or just use the issuer
+        var result = await _appAuth.authorize(
+          AuthorizationRequest(
+            _clientId,
+            _redirectUrl,
+            issuer: _issuer,
+            scopes: _scopes,
+          ),
+        );
+      */
+
+      if (result != null) {
+        _processAuthResponse(result);
+      }
+    } catch (_) {
+      _clearBusyState();
+    }
+  }
+
   Future<void> _signInWithNoCodeExchangeAndGeneratedNonce() async {
     try {
       _setBusyState();
@@ -368,8 +414,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _testApi(TokenResponse? response) async {
     final http.Response httpResponse = await http.get(
-        Uri.parse('https://demo.duendesoftware.com/api/test'),
+        Uri.parse('https://63c0-68-61-38-165.ngrok-free.app/WeatherForecast'),
         headers: <String, String>{'Authorization': 'Bearer $_accessToken'});
+
     setState(() {
       _userInfo = httpResponse.statusCode == 200 ? httpResponse.body : '';
       _isBusy = false;
